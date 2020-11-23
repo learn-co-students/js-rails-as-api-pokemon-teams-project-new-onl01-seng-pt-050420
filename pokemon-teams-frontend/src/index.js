@@ -42,20 +42,25 @@ function getPokemon(pokemons){
 };
 
 function addPokemon(pokemon){
-    debugger
     let trainer = parseInt(pokemon.data.relationships.trainer.data.id)
     let div = document.getElementById(trainer);
     let ul = div.querySelector('ul');
     const li = document.createElement('li');
-    
+    const deleteButton = document.createElement('button');
+    const pokemonId = pokemon.data.id;
+
+    deleteButton.innerText = "Release";
+    deleteButton.className = "release";
+    deleteButton.addEventListener('click', releasePokemon);
     li.innerText = pokemon.data.attributes.nickname;
-    ul.appendChild(li);
+    li.id = pokemonId;
+
+    ul.appendChild(li).append(deleteButton);
 };
 
 function createPokemon(event){
-    // debugger
     if (event.target.nextElementSibling.childElementCount == 6){
-        alert("You already have 6 Pokemons")
+        alert("You already have 6 Pokemons");
     } else {
         let trainerId = event.path[1].id
         fetch(POKEMONS_URL, {
@@ -67,7 +72,21 @@ function createPokemon(event){
             body: JSON.stringify({
                 trainer_id: trainerId
             })
-        }).then(res => res.json()).then(pokemon => console.log(pokemon))
+        }).then(response => response.json())
+        .then(alert("New Pokemon added."))
         .catch(error => alert("Something went wrong"))};
+        location.reload();
 };
+
+function releasePokemon(){
+    let id = parseInt(event.target.parentElement.id)
+    let POKEMON_URL = `${POKEMONS_URL}/${id}`
+    fetch(POKEMON_URL, {
+        method:"DELETE"
+    })
+    .then(alert("You've released your pokemon"))
+    .catch(error => alert('Your pokemon is sleeping. Try to release again.'))
+    location.reload();
+};
+
 getTrainers();
