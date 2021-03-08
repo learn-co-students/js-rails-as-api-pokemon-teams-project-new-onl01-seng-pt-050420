@@ -5,7 +5,7 @@
 - Combine both a JavaScript frontend with an API-Only build of Rails
 
 ## Introduction
-
+ 
 The ability to spin up a Rails APIs can actually help us develop our frontend
 JavaScript abilities, as the API will give something tangible to work against
 as you write your code.
